@@ -11,6 +11,7 @@
     "repo_name": "control-me",
     "init": false,
     "create_fork": null,
-    "repo_title": null
+    "repo_title": null,
+    "null_repo": true
   }
 }
