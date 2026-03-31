@@ -15,6 +15,7 @@ class ExerciseConfig:
         repo_name: str
         repo_title: Optional[str]
         create_fork: Optional[bool]
+        fork_all_branches: Optional[bool]
         init: Optional[bool]
 
     exercise_name: str
@@ -70,12 +71,15 @@ def get_exercise_config() -> ExerciseConfig:
 
     init: Optional[bool] = None
     create_fork: Optional[bool] = None
+    fork_all_branches: Optional[bool] = None
     repo_title: Optional[str] = None
     if exercise_repo_type == "local":
         init = confirm("Initialize exercise repo as Git repository?", True)
     elif exercise_repo_type == "remote":
         repo_title = prompt("Git-Mastery Github repository title", "")
         create_fork = confirm("Create fork of repository?", True)
+        if create_fork:
+            fork_all_branches = confirm("Copy all branches?", False)
     return ExerciseConfig(
         exercise_name=exercise_name,
         tags=tags,
@@ -87,6 +91,7 @@ def get_exercise_config() -> ExerciseConfig:
             repo_name=exercise_repo_name,
             repo_title=repo_title,
             create_fork=create_fork,
+            fork_all_branches=fork_all_branches,
             init=init,
         ),
     )
@@ -109,14 +114,11 @@ def create_download_py_file() -> None:
     # TODO: conditionally add the git tagging only when requires_repo is True
     with open("download.py", "w") as download_script_file:
         download_script = """
-        from exercise_utils.cli import run_command
-        from exercise_utils.gitmastery import create_start_tag
-
-        __resources__ = {}
+        __resources__ = {} # Delete if no resources needed
 
 
         def setup(verbose: bool = False):
-            create_start_tag(verbose)
+            pass
         """
         download_script_file.write(textwrap.dedent(download_script).lstrip())
 
